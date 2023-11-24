@@ -55,5 +55,6 @@ def get_data():
     df.to_csv(r' data.csv', header=False, index=False)
     print(df)
 
+
 if __name__ == '__main__':
     get_data()
