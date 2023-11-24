@@ -44,46 +44,16 @@ def get_data():
 
         cols = row.find_all('td')
 
-        # Extracting the table headers
-
         if len(cols) == 0:
             cols = row.find_all('th')
 
         cols = [ele.text.strip() for ele in cols]
-
-        data.append([ele for ele in cols if ele])  # Get rid of empty values
+        data.append([ele for ele in cols if ele])
 
     df = pd.DataFrame(data)
     df = df[[0, 5]].iloc[1:-1, :]
     df.to_csv(r' data.csv', header=False, index=False)
     print(df)
-
-    # table = soup.find('div', class_=('customTable-width deque-table-sortable-group')).find('table').find_all('tr')
-    # for tr in table:
-    #     find_name_symbol = tr.find_all('a', class_='symbol-word-break')
-    #     # find_final_price = tr.find('td', class_='bold text-right').get_text()
-    #
-    #     for i in find_name_symbol:
-    #         name_symbol = i.text.replace('\n', '')
-    #         data = {'names': name_symbol}
-    #
-    #     find_final_price = tr.find_all('td', class_='bold text-right')
-    #     for i in find_final_price:
-    #         final_price = i.text
-    #         data = {'final_prices': final_price}
-    #     write_csv(data)
-
-    driver.quit()
-
-
-def write_csv(data):
-    with open('data.csv', 'a') as f:
-        recorder = csv.writer(f)
-        recorder.writerow((data['names'],
-                           data['final_prices']))
-        # for elem in data:
-        #     recorder.writerow((elem, data[elem]))
-
 
 if __name__ == '__main__':
     get_data()
