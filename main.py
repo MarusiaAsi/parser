@@ -1,11 +1,10 @@
-import csv
 import time
 
+import pandas as pd
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-import pandas as pd
-from bs4 import BeautifulSoup
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
 
@@ -37,7 +36,6 @@ def get_data():
     pre_open_market.click()
     time.sleep(4)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    # soup = BeautifulSoup(driver.page_source, 'lxml')
     table = soup.find('table')
     data = []
     for row in table.find_all('tr'):
