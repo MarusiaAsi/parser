@@ -35,6 +35,7 @@ def get_data():
     driver.delete_all_cookies()
     pre_open_market.click()
     time.sleep(4)
+
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     table = soup.find('table')
     data = []
