@@ -1,14 +1,12 @@
 import time
-
-import pandas as pd
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
 
-def get_data():
+def custom_script():
+
     profile = webdriver.FirefoxProfile()
 
     profile.accept_untrusted_certs = True
@@ -24,38 +22,35 @@ def get_data():
     driver = webdriver.Firefox(driver_options)
 
     driver.get("https://www.nseindia.com")
+    time.sleep(10)
 
     hover_element = driver.find_element(By.ID, "link_2")
     actions = ActionChains(driver).move_to_element(hover_element)
     actions.perform()
     actions.click()
     time.sleep(4)
-    pre_open_market = driver.find_element(By.LINK_TEXT, "Pre-Open Market")
+
+    equity_market = driver.find_element(By.LINK_TEXT, "Equity & SME Market")
     time.sleep(3)
     driver.delete_all_cookies()
-    pre_open_market.click()
+    equity_market.click()
+    time.sleep(8)
+
+    sgb = driver.find_element(By.ID, "market-Svn-gold-bond")
+    driver.delete_all_cookies()
+    sgb.click()
     time.sleep(4)
 
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    table = soup.find('table')
-    data = []
-    for row in table.find_all('tr'):
+    market_billion = driver.find_element(By.ID, "market-billion")
+    market_billion.click()
+    time.sleep(4)
 
-        cols = row.find_all('td')
-
-        if len(cols) == 0:
-            cols = row.find_all('th')
-
-        cols = [ele.text.strip() for ele in cols]
-        data.append([ele for ele in cols if ele])
-
-    df = pd.DataFrame(data)
-    df = df[[0, 5]].iloc[1:-1, :]
-    df.to_csv(r' data.csv', header=False, index=False)
-    print(df)
+    end_scroll_elem = driver.find_element(By.ID, "marketWatchSoverignGoldBondCmsNote")
+    time.sleep(3)
+    driver.execute_script("arguments[0].scrollIntoView();", end_scroll_elem)
 
     driver.close()
 
 
 if __name__ == '__main__':
-    get_data()
+     custom_script()
